@@ -1,4 +1,6 @@
 import unittest
+import json
+from pathlib import Path
 from engine import SteamHangulEngine, BACKSPACE, RETURN, TAB, replacement
 
 
@@ -20,6 +22,22 @@ class EngineTests(unittest.TestCase):
 
     def test_reported_word_uses_composed_final(self):
         self.assertEqual([self.key(c) for c in 'ㄱㅓㅈㅣㅅ'], ['ㄱ','거','겆','거지','거짓'])
+
+    def test_requested_words_and_compound_syllables(self):
+        cases = json.loads(Path(__file__).with_name('word-cases.json').read_text())
+        for case in cases:
+            with self.subTest(word=case['word']):
+                self.engine.reset()
+                self.value = ''
+                for character in case['keys']:
+                    self.key(character)
+                self.assertEqual(self.value, case['word'])
+                self.assertEqual(self.key(' '), case['word'] + ' ')
+
+    def test_requested_words_in_one_continuous_phrase(self):
+        for character in 'ㄱㅓㅈㅣㅅ ㅇㅡㅣㅅㅜㄹ ㅇㅜㅇㅠㄱㅗㅏㄱ ':
+            self.key(character)
+        self.assertEqual(self.value, '거짓 의술 우유곽 ')
 
     def test_ascii_keys_from_the_original_steam_layout(self):
         for c in 'rjwlt': self.key(c)
