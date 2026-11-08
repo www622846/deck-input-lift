@@ -8,6 +8,21 @@ permissions:
   contents: read
 
 jobs:
+  steam-hangul:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install system Hangul composer
+        run: sudo apt-get update && sudo apt-get install -y libhangul1
+      - name: Test experimental Steam keyboard bridge
+        working-directory: steam-hangul
+        run: |
+          python3 -m unittest -v test_composer test_engine
+          node --test patch.test.cjs
+          bash -n install.sh uninstall.sh
   test:
     runs-on: ubuntu-latest
     steps:

@@ -8,6 +8,8 @@ Deck Input Lift makes room for the existing Steam keyboard, then asks the app to
 
 **Early preview:** verified on one Steam Deck running KWin 6.7.3 / Wayland, the Korean Steam keyboard and Firefox 152.0.4 Flatpak. Other versions and apps need testing. This is a Desktop Mode tool; Gaming Mode is outside its current scope.
 
+An optional [experimental Korean composition bridge](steam-hangul/README.ko.md) keeps Steam's existing keyboard UI and routes its Korean keys through libhangul. It has a separate installer and is not included in the v0.1.2 release. See its [device results and limits](steam-hangul/VERIFICATION.md).
+
 ## Install on Steam Deck
 
 1. Switch to Desktop Mode.
@@ -59,7 +61,7 @@ It does not read typed values, passwords or the clipboard, and does not collect 
 - Apps with large minimum window sizes, inaccessible inputs, unsupported scrolling, or conflicting tiling rules may need additional support.
 - On older KWin versions, initial maximization state is inferred from geometry. On Wayland, the normal window size from before maximization may not be restored exactly.
 - Desktop startup is configured, but a full logout/reboot was not part of the device test.
-- Existing Korean text was preserved in the device test. During diagnosis, actual Steam keyboard mouse/touch input produced `거짓` in an isolated Firefox page. The reporter confirmed normal input after the v0.1.2 scrolling update; the exact failure was not reproduced in the isolated page. Other IME paths, individual websites, top-docked keyboards and display scales need further testing.
+- Existing Korean text was preserved in the device test. During diagnosis, actual Steam keyboard mouse/touch input produced `거짓` in an isolated Firefox page, but the reporter subsequently confirmed the final-consonant problem still occurs. v0.1.2 is not a confirmed fix for that issue. An optional experimental bridge is being tested separately; other IME paths, individual websites, top-docked keyboards and display scales need further testing.
 
 Details and measured results are in [VERIFICATION.md](VERIFICATION.md). Background research is in [RESEARCH.md](RESEARCH.md).
 
