@@ -1,5 +1,9 @@
 # Deck Input Lift 0.1.2
 
+**한글 받침 문제:** v0.1.2로 해결된 것은 아닙니다. 기존 Steam 키보드 화면을 유지하는
+[실험적 한글 조합 보강](steam-hangul/README.ko.md)을 별도로 만들었습니다.
+별도 설치가 필요하며, [실기 검증 범위와 한계](steam-hangul/VERIFICATION.md)를 확인하세요.
+
 [English](README.md) · [v0.1.2 다운로드](https://github.com/www622846/deck-input-lift/releases/tag/v0.1.2) · [버그 제보](https://github.com/www622846/deck-input-lift/issues)
 
 Steam Deck **데스크톱 모드**에서 Steam 키보드가 열리면 사용 중인 창을 키보드 위
