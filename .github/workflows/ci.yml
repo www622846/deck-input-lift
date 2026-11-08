@@ -1,0 +1,34 @@
+name: Tests and release packaging
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run JavaScript and Python tests
+        run: npm test
+      - name: Check shell syntax
+        run: bash -n install.sh uninstall.sh
+      - name: Build release archives
+        run: npm run build
+      - name: Verify archive integrity
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          for path in Path("dist").iterdir():
+              if path.suffix not in (".zip", ".kwinscript"):
+                  continue
+              with ZipFile(path) as archive:
+                  assert archive.testzip() is None, path
+          PY
