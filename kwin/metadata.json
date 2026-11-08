@@ -3,7 +3,7 @@
     "Id": "deck-input-lift",
     "Name": "Deck Input Lift",
     "Description": "Make room for the Steam keyboard and restore the app when it closes",
-    "Version": "0.1.1",
+    "Version": "0.1.2",
     "License": "MIT",
     "Icon": "input-keyboard",
     "Website": "https://github.com/www622846/deck-input-lift",

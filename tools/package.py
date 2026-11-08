@@ -30,7 +30,9 @@ release = kwin + browser + [ROOT / n for n in (
     "tests/kwin.test.cjs", "tests/browser.test.cjs", "tests/browser-integration.py", "tools/package.py",
     "native/focus_guard.py", "native/deck-input-lift-focus.service",
     "native/process_group.py", "tests/test_process_group.py",
+    "tests/test_focus_guard.py",
     "tools/kwin-probe.py", "tools/firefox-device-check.py",
+    "tools/ime-web-probe.py", "tools/steam-keyboard-probe.mjs",
 )]
 archive(f"deck-input-lift-{VERSION}.zip", [(p, "deck-input-lift/" + p.relative_to(ROOT).as_posix()) for p in release])
 assets = (f"deck-input-lift-{VERSION}.zip", "deck-input-lift.kwinscript", "focus-guard.zip")

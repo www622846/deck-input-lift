@@ -2,7 +2,7 @@
 
 Keep the text field visible when the Steam Deck keyboard opens in **Desktop Mode**.
 
-[한국어 안내](README.ko.md) · [Download v0.1.1 preview](https://github.com/www622846/deck-input-lift/releases/tag/v0.1.1) · [Device verification](VERIFICATION.md) · [Report a bug](https://github.com/www622846/deck-input-lift/issues)
+[한국어 안내](README.ko.md) · [Download v0.1.2 preview](https://github.com/www622846/deck-input-lift/releases/tag/v0.1.2) · [Device verification](VERIFICATION.md) · [Report a bug](https://github.com/www622846/deck-input-lift/issues)
 
 Deck Input Lift makes room for the existing Steam keyboard, then asks the app to scroll its original focused input into view. Close the keyboard and the app's window size is restored. It keeps Steam's keyboard, layouts and input methods.
 
@@ -11,7 +11,7 @@ Deck Input Lift makes room for the existing Steam keyboard, then asks the app to
 ## Install on Steam Deck
 
 1. Switch to Desktop Mode.
-2. Download **[deck-input-lift-0.1.1.zip](https://github.com/www622846/deck-input-lift/releases/download/v0.1.1/deck-input-lift-0.1.1.zip)** from the release assets and extract it. Use this installer archive for the complete installation.
+2. Download **[deck-input-lift-0.1.2.zip](https://github.com/www622846/deck-input-lift/releases/download/v0.1.2/deck-input-lift-0.1.2.zip)** from the release assets and extract it. Use this installer archive for the complete installation.
 3. Close the Steam keyboard. Open a terminal in the extracted `deck-input-lift` folder and run:
 
    ```bash
@@ -59,7 +59,7 @@ It does not read typed values, passwords or the clipboard, and does not collect 
 - Apps with large minimum window sizes, inaccessible inputs, unsupported scrolling, or conflicting tiling rules may need additional support.
 - On older KWin versions, initial maximization state is inferred from geometry. On Wayland, the normal window size from before maximization may not be restored exactly.
 - Desktop startup is configured, but a full logout/reboot was not part of the device test.
-- Existing Korean text was preserved in the device test. Actual Korean IME composition, individual websites, top-docked keyboards and other display scales need further device testing.
+- Existing Korean text was preserved in the device test. During diagnosis, actual Steam keyboard mouse/touch input produced `거짓` in an isolated Firefox page. The reporter confirmed normal input after the v0.1.2 scrolling update; the exact failure was not reproduced in the isolated page. Other IME paths, individual websites, top-docked keyboards and display scales need further testing.
 
 Details and measured results are in [VERIFICATION.md](VERIFICATION.md). Background research is in [RESEARCH.md](RESEARCH.md).
 
@@ -72,7 +72,7 @@ npm test
 npm run build
 ```
 
-The current suite has 29 JavaScript tests and 8 Python regression tests. KWin tests use a simulated API; the separate device test covers actual Firefox and Steam keyboard behavior. Only run the device-check tools against the dedicated test profile described in their source.
+The current suite has 31 JavaScript tests and 14 Python regression tests. KWin tests use a simulated API; the separate device test covers actual Firefox and Steam keyboard behavior. Only run the device-check tools against the dedicated test profile described in their source.
 
 Generated archives are placed in `dist/` and built from an explicit file allowlist. Contributions and device compatibility reports are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
 

@@ -40,6 +40,7 @@ function keyboard(options = {}) {
 function boot(app, options = {}) {
   let current = app;
   let toggle;
+  const dbusCalls = [];
   const workspace = { stackingOrder: [app], currentDesktop: 1, currentActivity: 'default',
     clientArea() { return options.area || { x: 0, y: 0, width: 1280, height: 760 }; } };
   const added = signal(), removed = signal(), activated = signal();
@@ -54,10 +55,10 @@ function boot(app, options = {}) {
   }
   for (const name of ['currentDesktopChanged', 'currentActivityChanged', 'screensChanged']) workspace[name] = signal();
   vm.runInNewContext(code, { workspace, KWin: { MaximizeArea: 2 },
-    callDBus() {},
+    callDBus(...args) { dbusCalls.push(args); },
     readConfig: (name, fallback) => options.config?.[name] ?? fallback,
     registerShortcut: (id, label, keys, fn) => { toggle = fn; } });
-  return { workspace,
+  return { workspace, dbusCalls,
     add(w) { added.emit(w); },
     remove(w) { removed.emit(w); },
     activate(w) { current = w; activated.emit(w); },
@@ -190,4 +191,17 @@ test('native maximizeMode takes precedence over geometry inference', () => {
   const app = window({ maximizeMode: 0 }); const env = boot(app); const k = keyboard();
   env.add(k); env.remove(k);
   assert.deepEqual(app.maxCalls.at(-1), { v: false, h: false });
+});
+test('typing that updates the window title must not repeatedly scroll the IME field', () => {
+  const app = window({ pid: 42 }); const env = boot(app); const k = keyboard(); env.add(k);
+  for (const caption of ['ㄱ', '거', '겆', '거지', '거짓']) {
+    app.caption = caption; app.captionChanged.emit();
+  }
+  assert.equal(env.dbusCalls.filter(call => call[3] === 'Request').length, 1);
+  k.frameGeometry = { x: 0, y: 500, width: 1280, height: 300 };
+  assert.equal(env.dbusCalls.filter(call => call[3] === 'Request').length, 2);
+  env.remove(k);
+  assert.equal(env.dbusCalls.at(-1)[3], 'Clear');
+  env.add(keyboard());
+  assert.equal(env.dbusCalls.filter(call => call[3] === 'Request').length, 3);
 });

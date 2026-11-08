@@ -1,6 +1,6 @@
-# Deck Input Lift 0.1.1
+# Deck Input Lift 0.1.2
 
-[English](README.md) · [v0.1.1 다운로드](https://github.com/www622846/deck-input-lift/releases/tag/v0.1.1) · [버그 제보](https://github.com/www622846/deck-input-lift/issues)
+[English](README.md) · [v0.1.2 다운로드](https://github.com/www622846/deck-input-lift/releases/tag/v0.1.2) · [버그 제보](https://github.com/www622846/deck-input-lift/issues)
 
 Steam Deck **데스크톱 모드**에서 Steam 키보드가 열리면 사용 중인 창을 키보드 위
 공간에 맞추고, 닫히면 원래 위치·크기로 복원하는 초기 구현입니다. 위쪽으로 옮긴
@@ -14,7 +14,7 @@ KWin 5/6 API를 지원하도록 작성했지만 다른 SteamOS/Steam 버전별 �
 
 ## 설치
 
-1. 릴리스에서 [deck-input-lift-0.1.1.zip](https://github.com/www622846/deck-input-lift/releases/download/v0.1.1/deck-input-lift-0.1.1.zip)을 스팀덱에 내려받아 압축을 풉니다.
+1. 릴리스에서 [deck-input-lift-0.1.2.zip](https://github.com/www622846/deck-input-lift/releases/download/v0.1.2/deck-input-lift-0.1.2.zip)을 스팀덱에 내려받아 압축을 풉니다.
 2. Steam 키보드를 닫은 뒤 압축을 푼 `deck-input-lift` 폴더에서 터미널을 열고 실행합니다.
 
    ```bash
@@ -90,7 +90,9 @@ AT-SPI에서 편집 가능한 요소를 제공하고 `ScrollTo`를 구현한 앱
 - Android처럼 모든 앱의 커서 위치를 시스템 차원에서 추적하는 완성형 입력기 구현은 아닙니다.
 
 실기에서 Firefox의 긴 페이지 아래 검색 입력칸과 최대화 창을 검증했습니다.
-Google/Naver 등 개별 사이트, 실제 한글 IME 조합·삭제·Enter 제출, 상단 키보드,
+진단 중 실제 Steam 키보드의 마우스·터치 글쇠 입력으로 `거짓`이 조합되는 것을 확인했습니다.
+v0.1.2 설치 후 제보자가 정상 입력을 확인했지만, 제보 증상 자체는 독립 테스트 페이지에서 재현하지 못했습니다.
+Google/Naver 등 개별 사이트, 다른 한글 IME 경로·삭제·Enter 제출, 상단 키보드,
 다양한 디스플레이 배율과 다른 앱은 추가 확인이 필요합니다.
 
 ## 개발 및 검증
@@ -104,13 +106,13 @@ npm run build
 
 테스트는 KWin 이벤트를 흉내 낸 환경에서 창 축소·복원·전환·모니터·숨김·전체 화면을
 검사하고, 브라우저 보조 코드가 입력 내용을 읽지 않으며 필요한 요소에만 스크롤을
-요청하는지 확인합니다. JavaScript 테스트 29개와 Flatpak 프로세스 연결 회귀 테스트 8개가 통과했습니다.
+요청하는지 확인합니다. JavaScript 테스트 31개와 Python 회귀 테스트 14개가 통과했습니다.
 
 실제 Chrome 통합 검증도 수행했습니다. 1280×420 크기의 headless Chrome에서 중첩 스크롤
 영역 아래의 검색창·textarea·비밀번호·contenteditable 입력칸 4개가 화면 안에 들어오고,
 한글 문자열이 바뀌지 않으며 새 input 이벤트가 발생하지 않는 것을 확인했습니다.
 별도로 Steam Deck의 실제 KWin/Steam 키보드에서 창 축소·복원을 확인했습니다.
-Firefox 입력칸 보조 기능까지 통합 검증을 통과했습니다. 실제 한글 IME 조합 과정은 별도 확인이 필요합니다.
+Firefox 입력칸 보조 기능까지 통합 검증을 통과했습니다. 다른 앱과 IME 입력 경로는 추가 확인이 필요합니다.
 수치와 검증 범위는 [VERIFICATION.md](VERIFICATION.md)에 정리했습니다.
 
 브라우저 통합 검증 재실행:

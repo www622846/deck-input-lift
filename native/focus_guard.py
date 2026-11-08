@@ -41,6 +41,10 @@ class FocusGuard:
             if not self.editable(element):
                 self.focused.pop(group, None)
                 return
+            # Some apps repeat "focused" notifications while their input method
+            # is assembling a syllable. The same field does not need a new scroll.
+            if self.focused.get(group) == element:
+                return
             self.focused[group] = element
             # Bound stale application references over a long desktop session.
             if len(self.focused) > 32:

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Deck Input Lift — Focus Guard",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Keep the focused web input visible when Deck Input Lift resizes the browser.",
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],

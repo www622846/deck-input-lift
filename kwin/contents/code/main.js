@@ -141,7 +141,11 @@
                 session.normal = rect(w.frameGeometry);
             }
             if (!equal(w.frameGeometry, target)) w.frameGeometry = target;
-            if (w.pid > 0) {
+            // Captions can change on every input. Only a new reservation should
+            // request a scroll; repeating it while typing can disturb an IME.
+            var requestKey = JSON.stringify([w.pid, target.x, target.y, target.width, target.height]);
+            if (w.pid > 0 && session.requestKey !== requestKey) {
+                session.requestKey = requestKey;
                 callDBus("org.deckinputlift.FocusGuard", "/org/deckinputlift/FocusGuard",
                     "org.deckinputlift.FocusGuard", "Request", String(w.pid));
             }

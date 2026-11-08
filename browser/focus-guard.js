@@ -2,6 +2,7 @@
 (function () {
     "use strict";
     var pending;
+    var composing = false;
     function focused() {
         var element = document.activeElement;
         while (element && element.shadowRoot && element.shadowRoot.activeElement) {
@@ -10,6 +11,7 @@
         return element;
     }
     function keepVisible() {
+        if (composing) return;
         var element = focused();
         if (!element || !(element.isContentEditable || element.tagName === "TEXTAREA" ||
             (element.tagName === "INPUT" && /^(text|search|email|url|tel|number|password)$/i.test(element.type)))) return;
@@ -25,8 +27,17 @@
     }
     function schedule() {
         clearTimeout(pending);
+        if (composing) return;
         pending = setTimeout(keepVisible, 120);
     }
+    document.addEventListener("compositionstart", function () {
+        composing = true;
+        clearTimeout(pending);
+    });
+    document.addEventListener("compositionend", function () {
+        composing = false;
+        schedule();
+    });
     window.addEventListener("resize", schedule, { passive: true });
     window.addEventListener("orientationchange", schedule, { passive: true });
     document.addEventListener("focusin", schedule);

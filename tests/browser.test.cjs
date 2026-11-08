@@ -11,7 +11,8 @@ function setup(element) {
   const d = { activeElement: element, addEventListener(name, fn) { listeners[name] = fn; } };
   vm.runInNewContext(code, { window: w, document: d,
     clearTimeout() { timer = null; }, setTimeout(fn) { timer = fn; return 1; } });
-  return { w, d, trigger(name = 'resize') { listeners[name](); timer(); } };
+  return { w, d, trigger(name = 'resize') { listeners[name](); if (timer) timer(); },
+    fire(name) { listeners[name](); }, flush() { if (timer) { const fn = timer; timer = null; fn(); } } };
 }
 function input(box, properties = {}) {
   const el = { tagName: 'INPUT', type: 'search', calls: 0, getBoundingClientRect: () => box,
@@ -53,4 +54,12 @@ test('visual viewport offset is respected', () => {
   const el = input({ top: 20, bottom: 60 }); const env = setup(el);
   env.w.visualViewport = { offsetTop: 100, height: 200 };
   env.trigger(); assert.equal(el.calls, 1);
+});
+test('Korean composition suppresses pending and new scrolls until composition ends', () => {
+  const el = input({ top: 500, bottom: 540 }); const env = setup(el);
+  env.fire('resize');
+  env.fire('compositionstart');
+  env.flush(); assert.equal(el.calls, 0);
+  env.fire('resize'); env.fire('focusin'); env.flush(); assert.equal(el.calls, 0);
+  env.fire('compositionend'); env.flush(); assert.equal(el.calls, 1);
 });
